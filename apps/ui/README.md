@@ -37,20 +37,20 @@ The KYA Policy Editor provides an intuitive interface for:
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
+- Node.js 18+
+- pnpm 9+
 
 ### Installation
 
 ```bash
-cd kya-validator/ui
-npm install
+cd kya-validator
+pnpm install
 ```
 
 ### Development
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 The application will be available at `http://localhost:5174`
@@ -58,7 +58,7 @@ The application will be available at `http://localhost:5174`
 ### Building for Production
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 Build artifacts will be in the `dist/` directory.
@@ -196,7 +196,7 @@ const handleRunTest = async () => {
 The Policy Editor can be deployed as a static site:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 Deploy the `dist/` directory to:
@@ -268,19 +268,19 @@ Add to `src/presets/index.ts`:
 ### Component Tests
 
 ```bash
-npm run test
+pnpm run test
 ```
 
 ### E2E Tests
 
 ```bash
-npm run test:e2e
+pnpm run test:e2e
 ```
 
 ### Type Checking
 
 ```bash
-npm run type-check
+pnpm run type-check
 ```
 
 ## Performance

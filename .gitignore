@@ -2,6 +2,10 @@
 *test_results*
 kya-validator/ui/test_results/
 
+# npm lockfiles (project uses pnpm)
+package-lock.json
+**/package-lock.json
+
 **/.env
 
 *node_modules*

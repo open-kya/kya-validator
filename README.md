@@ -37,10 +37,10 @@ pip install kya-validator
 ### TypeScript/JavaScript (WASM)
 ```bash
 # From npm
-npm install @open-kya/kya-validator-wasm 
+pnpm add @open-kya/kya-validator-wasm
 
 # Local build
-cd bindings/wasm && npm run build:all
+cd bindings/wasm && pnpm run build:all
 ```
 
 > **Note**: For local development builds, see [bindings/wasm/README.md](bindings/wasm/README.md).

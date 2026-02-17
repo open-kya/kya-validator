@@ -52,39 +52,55 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: bindings/wasm/package-lock.json
 
-      - name: Install npm dependencies
-        working-directory: bindings/wasm
-        run: npm ci || npm install
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+        id: pnpm-cache
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build WASM (web target)
         working-directory: bindings/wasm
-        run: npm run build:wasm-web
+        run: pnpm run build:wasm-web
 
       - name: Build WASM (nodejs target)
         working-directory: bindings/wasm
-        run: npm run build:wasm-node
+        run: pnpm run build:wasm-node
 
       - name: Build TypeScript wrappers
         working-directory: bindings/wasm
-        run: npm run build:ts
+        run: pnpm run build:ts
 
       - name: Type check
         working-directory: bindings/wasm
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       - name: Package dry-run
         working-directory: bindings/wasm
         run: |
-          echo "Running npm pack --dry-run to verify packaging..."
-          npm pack --dry-run 2>&1 | head -100
+          echo "Running pnpm pack --dry-run to verify packaging..."
+          pnpm pack --dry-run 2>&1 | head -100
 
       - name: Create tarball artifact
         working-directory: bindings/wasm
         run: |
-          TARBALL=$(npm pack 2>&1 | tail -1)
+          TARBALL=$(pnpm pack 2>&1 | tail -1)
           echo "Created tarball: $TARBALL"
           mkdir -p artifacts
           mv "$TARBALL" artifacts/
@@ -169,20 +185,22 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-          cache-dependency-path: bindings/wasm/package-lock.json
 
-      - name: Install npm dependencies
-        working-directory: bindings/wasm
-        run: npm ci || npm install
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build WASM (all targets)
         working-directory: bindings/wasm
-        run: npm run build:all
+        run: pnpm run build:all
 
       - name: Publish to npm (Trusted Publishing with provenance)
         working-directory: bindings/wasm
-        run: npm publish --provenance --access public
+        run: pnpm publish --provenance --access public
         env:
           NPM_CONFIG_PROVENANCE: true
 

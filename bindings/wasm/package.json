@@ -70,13 +70,13 @@
     "build:wasm-web": "wasm-pack build --target web --out-dir pkg-web --out-name kya_validator --release",
     "build:wasm-node": "wasm-pack build --target nodejs --out-dir pkg-node --out-name kya_validator --release",
     "build:ts": "tsc -p tsconfig.json",
-    "build:all": "npm run build:wasm-web && npm run build:wasm-node && npm run build:ts",
+    "build:all": "pnpm run build:wasm-web && pnpm run build:wasm-node && pnpm run build:ts",
     "clean": "rm -rf dist pkg-web pkg-node *.tgz",
-    "pack:dry-run": "npm run build:all && npm pack --dry-run 2>&1 | head -50",
-    "pack:artifact": "npm run build:all && npm pack",
+    "pack:dry-run": "pnpm run build:all && pnpm pack --dry-run 2>&1 | head -50",
+    "pack:artifact": "pnpm run build:all && pnpm pack",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src --ext .ts",
-    "prepublishOnly": "npm run build:all"
+    "prepublishOnly": "pnpm run build:all"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

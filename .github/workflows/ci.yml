@@ -89,17 +89,34 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: apps/ui/package-lock.json
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+        id: pnpm-cache
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
 
       - name: Install dependencies
-        run: cd apps/ui && npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint frontend
-        run: cd apps/ui && npm run lint
+        run: cd apps/ui && pnpm run lint
 
       - name: Test frontend
-        run: cd apps/ui && npm run test:unit
+        run: cd apps/ui && pnpm run test:unit
 
   # Publish Rust crate to crates.io (requires enable_publish: true)
   publish-crates:

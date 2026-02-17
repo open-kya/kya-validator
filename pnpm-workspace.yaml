@@ -1,0 +1,5 @@
+# pnpm-workspace.yaml
+# Workspace configuration for kya-validator monorepo
+packages:
+  - "apps/ui"
+  - "bindings/wasm"

@@ -7,11 +7,11 @@ WebAssembly bindings for KYA (Know Your Agent) Validator, supporting both browse
 ```bash
 # From source (local development)
 cd bindings/wasm
-npm install
-npm run build:all
+pnpm install
+pnpm run build:all
 
 # From git (when published)
-npm install @open-kya/kya-validator-wasm
+pnpm add @open-kya/kya-validator-wasm
 ```
 
 ## Prerequisites
@@ -169,24 +169,24 @@ class ValidationError extends Error {
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Build WASM for both targets + TypeScript wrappers
-npm run build:all
+pnpm run build:all
 
 # Build individual components
-npm run build:wasm-web   # Browser target only
-npm run build:wasm-node  # Node.js target only
-npm run build:ts         # TypeScript wrappers only
+pnpm run build:wasm-web   # Browser target only
+pnpm run build:wasm-node  # Node.js target only
+pnpm run build:ts         # TypeScript wrappers only
 
 # Type checking
-npm run typecheck
+pnpm run typecheck
 
 # Package dry-run (verify packaging without publishing)
-npm run pack:dry-run
+pnpm run pack:dry-run
 
 # Create tarball artifact
-npm run pack:artifact
+pnpm run pack:artifact
 ```
 
 ## Output Structure
@@ -229,7 +229,7 @@ See the `bindings/wasm/` directory for additional example files:
 
 This package includes a dry-run CI workflow that:
 1. Builds the WASM package
-2. Runs `npm pack --dry-run` to verify packaging
+2. Runs `pnpm pack --dry-run` to verify packaging
 3. Uploads build artifacts
 4. **Does not** publish to npm
 
