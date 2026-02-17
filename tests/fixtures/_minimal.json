@@ -1,0 +1,41 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+    "https://w3id.org/kya/v1"
+  ],
+  "id": "urn:uuid:6c5c3d8d-6d44-4c61-9d77-8c75d4a0cb9a",
+  "type": [
+    "VerifiablePresentation",
+    "KyaManifest"
+  ],
+  "kyaVersion": "1.1.0",
+  "agentId": "did:web:procurement.example",
+  "verificationMethod": [
+    {
+      "id": "did:web:procurement.example#key-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:web:procurement.example",
+      "publicKeyMultibase": "z6MkvhY9Qy3Y6cF1s7g8p4vFq3mQk6oQxJ5Y2n8m7s4V1p"
+    }
+  ],
+  "authentication": [
+    "did:web:procurement.example#key-1"
+  ],
+  "assertionMethod": [
+    "did:web:procurement.example#key-1"
+  ],
+  "capabilityInvocation": [
+    "did:web:procurement.example#key-1"
+  ],
+  "proof": [
+    {
+      "type": "DataIntegrityProof",
+      "cryptosuite": "eddsa-jcs-2022",
+      "verificationMethod": "did:web:procurement.example#key-1",
+      "proofPurpose": "capabilityInvocation",
+      "proofValue": "z3u2R2w9oYpYxQmVb1p7XkQbq7rYJv5tL4bqj1m2n3p4q5r6s7"
+    }
+  ]
+}

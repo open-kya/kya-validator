@@ -1,0 +1,1622 @@
+{
+  "C01": {
+    "M01": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C02": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C03": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C04": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C05": {
+    "M01": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C06": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C07": {
+    "M01": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C08": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C09": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  },
+  "C10": {
+    "M01": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M02": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M03": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M04": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M05": {
+      "crypto": true,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M06": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M07": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": false
+    },
+    "M08": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M09": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M10": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": false,
+      "ttl": true
+    },
+    "M11": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M12": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M13": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M14": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M15": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M16": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M17": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": false,
+      "schema": false,
+      "ttl": true
+    },
+    "M18": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M19": {
+      "crypto": false,
+      "inspector": false,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    },
+    "M20": {
+      "crypto": false,
+      "inspector": true,
+      "overall": false,
+      "policy": true,
+      "schema": true,
+      "ttl": true
+    }
+  }
+}

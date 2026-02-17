@@ -1,0 +1,290 @@
+[
+  {
+    "id": "M01",
+    "name": "baseline-valid",
+    "description": "Minimal example manifest with no modifications.",
+    "base": "minimal",
+    "manifest": {}
+  },
+  {
+    "id": "M02",
+    "name": "missing-legal-vc",
+    "description": "Missing verifiableCredential array.",
+    "base": "minimal",
+    "manifest": {
+      "remove": ["/verifiableCredential"]
+    }
+  },
+  {
+    "id": "M03",
+    "name": "untrusted-controller",
+    "description": "Agent controller outside allowlist.",
+    "base": "minimal",
+    "manifest": {
+      "agentId": "did:web:untrusted.example",
+      "verificationMethod": [
+        {
+          "id": "did:web:untrusted.example#key-1",
+          "type": "Ed25519VerificationKey2020",
+          "controller": "did:web:untrusted.example",
+          "publicKeyMultibase": "z6MkvhY9Qy3Y6cF1s7g8p4vFq3mQk6oQxJ5Y2n8m7s4V1p"
+        }
+      ],
+      "authentication": ["did:web:untrusted.example#key-1"],
+      "assertionMethod": ["did:web:untrusted.example#key-1"],
+      "capabilityInvocation": ["did:web:untrusted.example#key-1"],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:untrusted.example#key-1",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z3u2R2w9oYpYxQmVb1p7XkQbq7rYJv5tL4bqj1m2n3p4q5r6s7"
+        }
+      ]
+    }
+  },
+  {
+    "id": "M04",
+    "name": "missing-proof",
+    "description": "Missing proof array (schema invalid).",
+    "base": "minimal",
+    "manifest": {
+      "remove": ["/proof"]
+    }
+  },
+  {
+    "id": "M05",
+    "name": "empty-proof",
+    "description": "Proof array empty (schema invalid).",
+    "base": "minimal",
+    "manifest": {
+      "proof": []
+    }
+  },
+  {
+    "id": "M06",
+    "name": "unsupported-version",
+    "description": "kyaVersion outside allowlist.",
+    "base": "minimal",
+    "manifest": {
+      "kyaVersion": "2.0.0"
+    }
+  },
+  {
+    "id": "M07",
+    "name": "ttl-invalid",
+    "description": "issuanceDate in future and expirationDate in past.",
+    "base": "minimal",
+    "manifest": {
+      "issuanceDate": "2999-01-01T00:00:00Z",
+      "expirationDate": "2000-01-01T00:00:00Z"
+    }
+  },
+  {
+    "id": "M08",
+    "name": "missing-context",
+    "description": "@context missing (schema invalid).",
+    "base": "minimal",
+    "manifest": {
+      "remove": ["/@context"]
+    }
+  },
+  {
+    "id": "M09",
+    "name": "invalid-agent-id",
+    "description": "agentId not a DID (schema invalid).",
+    "base": "minimal",
+    "manifest": {
+      "agentId": "not-a-did"
+    }
+  },
+  {
+    "id": "M10",
+    "name": "missing-verification-method",
+    "description": "verificationMethod missing (schema invalid).",
+    "base": "minimal",
+    "manifest": {
+      "remove": ["/verificationMethod"]
+    }
+  },
+  {
+    "id": "M11",
+    "name": "unsupported-key-type",
+    "description": "Unsupported verification method type (crypto invalid).",
+    "base": "minimal",
+    "manifest": {
+      "verificationMethod": [
+        {
+          "id": "did:web:procurement.example#key-1",
+          "type": "UnsupportedKeyType2025",
+          "controller": "did:web:procurement.example",
+          "publicKeyMultibase": "z6MkvhY9Qy3Y6cF1s7g8p4vFq3mQk6oQxJ5Y2n8m7s4V1p"
+        }
+      ],
+      "authentication": ["did:web:procurement.example#key-1"],
+      "assertionMethod": ["did:web:procurement.example#key-1"],
+      "capabilityInvocation": ["did:web:procurement.example#key-1"],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:procurement.example#key-1",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z3u2R2w9oYpYxQmVb1p7XkQbq7rYJv5tL4bqj1m2n3p4q5r6s7"
+        }
+      ]
+    }
+  },
+  {
+    "id": "M12",
+    "name": "invalid-key-multibase",
+    "description": "publicKeyMultibase has unsupported prefix.",
+    "base": "minimal",
+    "manifest": {
+      "verificationMethod": [
+        {
+          "id": "did:web:procurement.example#key-1",
+          "type": "Ed25519VerificationKey2020",
+          "controller": "did:web:procurement.example",
+          "publicKeyMultibase": "x123"
+        }
+      ],
+      "authentication": ["did:web:procurement.example#key-1"],
+      "assertionMethod": ["did:web:procurement.example#key-1"],
+      "capabilityInvocation": ["did:web:procurement.example#key-1"],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:procurement.example#key-1",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z3u2R2w9oYpYxQmVb1p7XkQbq7rYJv5tL4bqj1m2n3p4q5r6s7"
+        }
+      ]
+    }
+  },
+  {
+    "id": "M13",
+    "name": "invalid-proof-multibase",
+    "description": "proofValue has unsupported prefix.",
+    "base": "minimal",
+    "manifest": {
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:procurement.example#key-1",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "x123"
+        }
+      ]
+    }
+  },
+  {
+    "id": "M14",
+    "name": "controller-mismatch",
+    "description": "verificationMethod controller does not match agentId.",
+    "base": "minimal",
+    "manifest": {
+      "verificationMethod": [
+        {
+          "id": "did:web:procurement.example#key-1",
+          "type": "Ed25519VerificationKey2020",
+          "controller": "did:web:other.example",
+          "publicKeyMultibase": "z6MkvhY9Qy3Y6cF1s7g8p4vFq3mQk6oQxJ5Y2n8m7s4V1p"
+        }
+      ],
+      "authentication": ["did:web:procurement.example#key-1"],
+      "assertionMethod": ["did:web:procurement.example#key-1"],
+      "capabilityInvocation": ["did:web:procurement.example#key-1"],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:procurement.example#key-1",
+          "proofPurpose": "capabilityInvocation",
+          "proofValue": "z3u2R2w9oYpYxQmVb1p7XkQbq7rYJv5tL4bqj1m2n3p4q5r6s7"
+        }
+      ]
+    }
+  },
+  {
+    "id": "M15",
+    "name": "insurance-only-vc",
+    "description": "Insurance VC present, legal VC missing.",
+    "base": "minimal",
+    "manifest": {
+      "verifiableCredential": [
+        {
+          "id": "urn:uuid:insurance",
+          "type": ["VerifiableCredential", "InsuranceCredential"],
+          "issuer": "did:web:issuer.example",
+          "issuanceDate": "2024-01-01T00:00:00Z",
+          "credentialSubject": {
+            "policyNumber": "POL-123",
+            "underwriter": {"id": "https://insurer.example"}
+          },
+          "proof": {"type": "DataIntegrityProof"}
+        }
+      ]
+    }
+  },
+  {
+    "id": "M16",
+    "name": "legal-and-insurance",
+    "description": "Full example manifest with no modifications.",
+    "base": "full",
+    "manifest": {}
+  },
+  {
+    "id": "M17",
+    "name": "proof-missing-value",
+    "description": "Proof missing proofValue (schema invalid).",
+    "base": "minimal",
+    "manifest": {
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "verificationMethod": "did:web:procurement.example#key-1",
+          "proofPurpose": "capabilityInvocation"
+        }
+      ]
+    }
+  },
+  {
+    "id": "M18",
+    "name": "solvency-address-only",
+    "description": "solvencyAddress without solvencyChain.",
+    "base": "full",
+    "manifest": {
+      "solvencyAddress": "0xdeadbeef",
+      "remove": ["/verifiableCredential"]
+    }
+  },
+  {
+    "id": "M19",
+    "name": "solvency-pair",
+    "description": "solvencyAddress + solvencyChain present.",
+    "base": "full",
+    "manifest": {
+      "solvencyAddress": "0xdeadbeef",
+      "solvencyChain": "ethereum",
+      "remove": ["/verifiableCredential"]
+    }
+  },
+  {
+    "id": "M20",
+    "name": "attestation-uri",
+    "description": "TEE attestation URI present (used for external link checks).",
+    "base": "full",
+    "manifest": {
+      "deployment": {
+        "tee": {
+          "framework": "sgx",
+          "attestationUri": "http://127.0.0.1:9/attestation"
+        }
+      }
+    }
+  }
+]

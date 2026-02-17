@@ -1,0 +1,430 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://w3id.org/security/suites/ed25519-2020/v1",
+    "https://w3id.org/kya/v1"
+  ],
+  "id": "urn:uuid:2fb3f7a7-2a1a-46f1-9b36-8b8fd1f8a3a1",
+  "type": [
+    "VerifiablePresentation",
+    "KyaManifest"
+  ],
+  "kyaVersion": "1.1.0",
+  "agentId": "did:web:jit-procurement.omniworks.example",
+  "name": "JIT Procurement Agent",
+  "label": "Just-in-time procurement agent constrained by approved suppliers, spend limits, and governance thresholds.",
+  "governingAuthority": [
+    "did:web:omniworks.example#procurement-governance",
+    "did:web:omniworks.example#risk-committee"
+  ],
+  "verificationMethod": [
+    {
+      "id": "did:web:jit-procurement.omniworks.example#key-auth-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:web:jit-procurement.omniworks.example",
+      "publicKeyMultibase": "z6MkiZfJHj3qvA8fB6q1N8dQ3oQwR8QyKqYc8k2qQpQpZr3k"
+    },
+    {
+      "id": "did:web:jit-procurement.omniworks.example#key-action-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:web:jit-procurement.omniworks.example",
+      "publicKeyMultibase": "z6Mkm3o8t9bqkq7oW4v6u2QmN6m3mF3y8sGZ2p4w9mWwQx1r"
+    },
+    {
+      "id": "did:web:jit-procurement.omniworks.example#key-gov-1",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:web:omniworks.example",
+      "publicKeyMultibase": "z6Mknqkq9b7YpG6y2zvYk7oS7m2xZ8QmP3cQ9wV5sF1dH2tP"
+    },
+    {
+      "id": "did:web:jit-procurement.omniworks.example#key-gov-2",
+      "type": "Ed25519VerificationKey2020",
+      "controller": "did:web:omniworks.example",
+      "publicKeyMultibase": "z6Mkq1s9yK3mR8wQ2vZ7pG5hT6xN3mF9dQ4bA8fJHj3qvA8f"
+    },
+    {
+      "id": "did:web:jit-procurement.omniworks.example#key-agree-1",
+      "type": "X25519KeyAgreementKey2020",
+      "controller": "did:web:jit-procurement.omniworks.example",
+      "publicKeyMultibase": "z6LSqkq9b7YpG6y2zvYk7oS7m2xZ8QmP3cQ9wV5sF1dH2tP"
+    }
+  ],
+  "authentication": [
+    "did:web:jit-procurement.omniworks.example#key-auth-1"
+  ],
+  "assertionMethod": [
+    "did:web:jit-procurement.omniworks.example#key-action-1"
+  ],
+  "capabilityInvocation": [
+    "did:web:jit-procurement.omniworks.example#key-gov-1",
+    "did:web:jit-procurement.omniworks.example#key-gov-2"
+  ],
+  "keyAgreement": [
+    "did:web:jit-procurement.omniworks.example#key-agree-1"
+  ],
+  "minProofsRequired": 2,
+  "legal": {
+    "termsUri": "https://docs.omniworks.example/kya/jit-procurement-terms-v1.pdf",
+    "termsHash": "c6f2c6a4bf0f3a2bd169a66f7c6fdd64e9baf0d77b1a0b4fb8d3f2b7e8b2a1c9",
+    "disputeResolution": [
+      {
+        "priority": 1,
+        "mechanism": "onChain",
+        "entity": "did:web:omniworks.example#disputes-contract",
+        "escalationPossible": true
+      },
+      {
+        "priority": 2,
+        "mechanism": "arbitrator",
+        "entity": "did:web:neutral-arbitration.example#panel",
+        "escalationPossible": true
+      },
+      {
+        "priority": 3,
+        "mechanism": "analogCourt",
+        "entity": "Venue: Copenhagen (DK)",
+        "escalationPossible": true
+      }
+    ]
+  },
+  "permissionMode": "strict",
+  "permittedDomains": [
+    "api.erp.omniworks.example",
+    "api.supplier-network.example",
+    "fx.oracle.example",
+    "attest.omniworks.example",
+    "control.omniworks.example",
+    "status.omniworks.example",
+    "telemetry.omniworks.example"
+  ],
+  "permittedRegions": [
+    "DK",
+    "DE",
+    "NL",
+    "SE",
+    "US"
+  ],
+  "maxTransactionValue": 2500000,
+  "currency": "USD",
+  "operatingLimits": {
+    "periodSpendLimit": 50000000,
+    "periodDuration": "30d"
+  },
+  "signingPolicy": {
+    "defaultSignaturesRequired": 1,
+    "constraints": [
+      {
+        "intent": "transfer",
+        "condition": {
+          "minValue": 500000
+        },
+        "requirement": {
+          "threshold": 2,
+          "signers": [
+            "did:web:jit-procurement.omniworks.example#key-gov-1",
+            "did:web:jit-procurement.omniworks.example#key-gov-2"
+          ]
+        }
+      },
+      {
+        "intent": "contractUpgrade",
+        "requirement": {
+          "threshold": 2,
+          "signers": [
+            "did:web:jit-procurement.omniworks.example#key-gov-1",
+            "did:web:jit-procurement.omniworks.example#key-gov-2"
+          ]
+        }
+      }
+    ]
+  },
+  "deployment": {
+    "info": "Cloud: AWS (example); Region: us-east-1; Confidential compute: Nitro Enclaves; Release channel: signed artifacts",
+    "updatePolicy": "signedRelease",
+    "authoritativeSigner": "did:web:release-signing.omniworks.example",
+    "tee": {
+      "hardwareLabel": "nitro-enclave-prod-a",
+      "framework": "nitro",
+      "signerHash": "a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0",
+      "minimumSvn": 7,
+      "allowDebug": false,
+      "attestationUri": "https://attest.omniworks.example/nitro/attest",
+      "bindingMechanism": "pubkeyHash"
+    }
+  },
+  "governance": {
+    "controlUri": "https://control.omniworks.example/kya/jit-procurement",
+    "validFrom": "2026-01-01T00:00:00Z",
+    "validUntil": "2027-01-01T00:00:00Z",
+    "pulseInterval": 300,
+    "visibility": "permissioned",
+    "statusUri": "https://status.omniworks.example/agents/jit-procurement",
+    "telemetryUri": "wss://telemetry.omniworks.example/agents/jit-procurement",
+    "oracles": [
+      {
+        "id": "#oracleFxRates",
+        "serviceEndpoint": [
+          "https://fx.oracle.example/v1/rates",
+          "https://fx.oracle.example/v1/rates-backup"
+        ],
+        "providerDid": "did:web:fx.oracle.example",
+        "purpose": [
+          "fxRates"
+        ],
+        "role": "primary",
+        "safetyBounds": {
+          "maxStaleness": 120,
+          "maxDeviation": 0.03,
+          "slippageTolerance": 0.01,
+          "minConfidence": 0.98
+        }
+      },
+      {
+        "id": "#oracleCommodityIndex",
+        "serviceEndpoint": [
+          "https://pricing.oracle.example/v2/commodities"
+        ],
+        "providerDid": "did:web:pricing.oracle.example",
+        "purpose": [
+          "priceFeed"
+        ],
+        "role": "backup",
+        "safetyBounds": {
+          "maxStaleness": 600,
+          "maxDeviation": 0.05,
+          "slippageTolerance": 0.02,
+          "minConfidence": 0.95
+        }
+      }
+    ]
+  },
+  "treasury": [
+    {
+      "id": "urn:uuid:2d6f0db5-4d92-4eaa-8bf8-4cdeac9d597b",
+      "assetHints": [
+        "fiat:usd",
+        "fiat:eur"
+      ],
+      "networks": [
+        "swift",
+        "sepa"
+      ],
+      "usage": "operational"
+    },
+    {
+      "id": "urn:uuid:7e0d2b8a-0f16-4f28-9a07-7f7bd5e8e31a",
+      "assetHints": [
+        "fiat:usd"
+      ],
+      "networks": [
+        "swift"
+      ],
+      "usage": "escrow"
+    }
+  ],
+  "verifiableCredential": [
+    {
+      "id": "urn:uuid:2d6f0db5-4d92-4eaa-8bf8-4cdeac9d597b",
+      "type": [
+        "VerifiableCredential",
+        "SolvencyCredential"
+      ],
+      "issuer": "did:web:omniworks.example",
+      "validFrom": "2026-01-10T12:00:00Z",
+      "validUntil": "2026-02-10T12:00:00Z",
+      "issuanceDate": "2026-01-10T12:00:00Z",
+      "credentialSubject": {
+        "accountType": "custodial",
+        "settlementScheme": [
+          "swift",
+          "sepa"
+        ],
+        "assets": [
+          {
+            "assetId": "USD",
+            "balance": "1250000.00"
+          },
+          {
+            "assetId": "EUR",
+            "balance": "400000.00"
+          }
+        ],
+        "asOf": "2026-01-10T11:59:30Z"
+      },
+      "challengeService": [
+        {
+          "type": "ZkSolvencyCircuit",
+          "challengeEndpoint": "https://api.omniworks.example/zk/solvency/challenge",
+          "method": "proverIntermediary",
+          "supportedQueries": [
+            "rangeProof",
+            "equality"
+          ],
+          "verificationKeyMultibase": "zVK2mF3y8sGZ2p4w9mWwQx1r9b7YpG6y2zvYk7oS7m2xZ8Qm"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "kya:BankLetter",
+          "id": "https://docs.omniworks.example/evidence/solvency-letter-2026-01.pdf",
+          "digestMultibase": "zQmXk2qQpQpZr3kq1N8dQ3oQwR8QyKqYc8k2qQpQpZr3kq1N"
+        }
+      ],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:jit-procurement.omniworks.example#key-action-1",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z3rQmYd9oA8fB6q1N8dQ3oQwR8QyKqYc8k2qQpQpZr3kq1N8dQ3o"
+        }
+      ]
+    },
+    {
+      "id": "urn:uuid:7e0d2b8a-0f16-4f28-9a07-7f7bd5e8e31a",
+      "type": [
+        "VerifiableCredential",
+        "InsuranceCredential"
+      ],
+      "issuer": "did:web:insurer.example",
+      "validFrom": "2026-01-01T00:00:00Z",
+      "validUntil": "2027-01-01T00:00:00Z",
+      "credentialSubject": {
+        "policyNumber": "POL-OMNI-AGENT-2026-001",
+        "underwriter": {
+          "id": "did:web:insurer.example",
+          "name": "Example Underwriter Co."
+        },
+        "coverageLimit": {
+          "amount": "2000000",
+          "currency": "USD"
+        },
+        "coverageType": [
+          "operationalFraud",
+          "vendorDispute"
+        ],
+        "deductible": {
+          "amount": "25000",
+          "currency": "USD"
+        },
+        "claimsEndpoint": "https://claims.insurer.example/submit"
+      },
+      "evidence": [
+        {
+          "type": "kya:PolicyPdf",
+          "id": "https://docs.insurer.example/policies/POL-OMNI-AGENT-2026-001.pdf",
+          "digestMultibase": "zQmP3cQ9wV5sF1dH2tP9b7YpG6y2zvYk7oS7m2xZ8QmP3cQ9w"
+        }
+      ],
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:insurer.example#key-issuer-1",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z2vZ7pG5hT6xN3mF9dQ4bA8fJHj3qvA8fB6q1N8dQ3oQwR8QyKq"
+        }
+      ]
+    },
+    {
+      "id": "urn:uuid:9cb3c5cb-9c49-4c05-8d8c-2b0a3f8e3e45",
+      "type": [
+        "VerifiableCredential",
+        "AuditCredential"
+      ],
+      "issuer": "did:web:auditor.example",
+      "validFrom": "2025-12-01T00:00:00Z",
+      "validUntil": "2026-12-01T00:00:00Z",
+      "digestMultibase": "zQmAuditDigestExample9b7YpG6y2zvYk7oS7m2xZ8QmP3cQ9wV5sF",
+      "location": "https://docs.auditor.example/reports/omniworks-jit-procurement-audit-2025.pdf"
+    },
+    {
+      "id": "urn:uuid:1b9b2c37-0db5-4fe6-b1d5-0b19e0e0e6c1",
+      "type": [
+        "VerifiableCredential",
+        "LegalEntityCredential"
+      ],
+      "issuer": "did:web:registry.example",
+      "validFrom": "2026-01-05T09:00:00Z",
+      "validUntil": "2027-01-05T09:00:00Z",
+      "credentialSubject": {
+        "legalName": "OmniWorks Global Manufacturing A/S",
+        "jurisdiction": "DK-84",
+        "lei": "5493001KJTIIGC8Y1R12",
+        "registrationNumber": "CVR-12345678",
+        "officials": [
+          "did:web:omniworks.example#officer-1",
+          "did:web:omniworks.example#officer-2"
+        ]
+      },
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:registry.example#key-issuer-1",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z6Mkm3o8t9bqkq7oW4v6u2QmN6m3mF3y8sGZ2p4w9mWwQx1r9b7Y"
+        }
+      ]
+    },
+    {
+      "id": "urn:uuid:3b7d5b23-8d1a-4f45-9f5e-7a9e7df57e13",
+      "type": [
+        "VerifiableCredential",
+        "LicenseCredential"
+      ],
+      "issuer": "did:web:regulator.example",
+      "validFrom": "2026-01-01T00:00:00Z",
+      "validUntil": "2027-01-01T00:00:00Z",
+      "credentialSubject": {
+        "licenses": [
+          {
+            "licenseType": "ProcurementAgentOperator",
+            "licenseNumber": "LIC-PAO-2026-0042",
+            "grantingAuthority": "did:web:regulator.example",
+            "permittedActivities": [
+              "purchaseOrderSubmission",
+              "invoiceMatching",
+              "supplierOnboarding"
+            ]
+          },
+          {
+            "licenseType": "EnterpriseSpendingDelegate",
+            "licenseNumber": "LIC-ESD-2026-0199",
+            "grantingAuthority": "did:web:regulator.example",
+            "permittedActivities": [
+              "budgetedPurchasesUnderThreshold",
+              "catalogOrdering"
+            ]
+          }
+        ]
+      },
+      "proof": [
+        {
+          "type": "DataIntegrityProof",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:regulator.example#key-issuer-1",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "z6MkiZfJHj3qvA8fB6q1N8dQ3oQwR8QyKqYc8k2qQpQpZr3kq1N8d"
+        }
+      ]
+    }
+  ],
+  "proof": [
+    {
+      "type": "DataIntegrityProof",
+      "cryptosuite": "eddsa-jcs-2022",
+      "verificationMethod": "did:web:jit-procurement.omniworks.example#key-gov-1",
+      "proofPurpose": "capabilityInvocation",
+      "proofValue": "zGovProofValueExample1qQpQpZr3kq1N8dQ3oQwR8QyKqYc8k2qQpQpZ"
+    },
+    {
+      "type": "DataIntegrityProof",
+      "cryptosuite": "eddsa-jcs-2022",
+      "verificationMethod": "did:web:jit-procurement.omniworks.example#key-gov-2",
+      "proofPurpose": "capabilityInvocation",
+      "proofValue": "zGovProofValueExample2qk7oW4v6u2QmN6m3mF3y8sGZ2p4w9mWwQx1r"
+    }
+  ]
+}

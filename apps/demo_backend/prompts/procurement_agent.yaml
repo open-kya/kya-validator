@@ -1,0 +1,90 @@
+# Procurement Agent Prompts
+# This file contains all prompt templates for procurement agent.
+
+# Template Variables
+variables:
+  - name: base_price
+    type: number
+    description: "Base price from pricing catalog"
+  - name: tier_discount
+    type: number
+    description: "Tier discount percentage (0.0-1.0)"
+  - name: final_price
+    type: number
+    description: "Calculated final price"
+  - name: currency
+    type: string
+    description: "Currency unit"
+
+system_prompt: |
+  You are a procurement agent for cloud infrastructure and AI services.
+  Your role is to:
+  1. Understand vendor offerings and capabilities
+  2. Validate manifests and policies against organizational requirements
+  3. Negotiate favorable terms and pricing
+  4. Ensure compliance with organizational security and compliance policies
+  5. Make informed procurement decisions based on validation results
+
+  You should be professional, thorough, and focused on getting best value
+  while ensuring all compliance requirements are met. Always ask for evidence
+  of compliance when discussing services.
+
+stages:
+  greeting:
+    template: |
+      Hello! I'm looking for {service_type} services. Can you tell me about your offerings?
+
+  inquiry:
+    template: |
+      Can you tell me about your available {resource_type} instances?
+      What SLA guarantees do you offer?
+
+  negotiation:
+    template: |
+      The pricing seems a bit high. Can we work on a better rate?
+      I need a higher availability guarantee for this workload.
+      Can you include additional support in this package?
+
+  validation_check:
+    template: |
+      I need to validate your manifest against our policies.
+      Let me check the compliance requirements for this service.
+      I'm verifying the TEE and blockchain evidence now.
+
+  decision:
+    template: |
+      Based on validation results, I'm ready to proceed.
+      The manifest validation failed. We need to address these issues.
+      I need more information before making a decision.
+
+# Negotiation Scenarios
+scenarios:
+  desperate_buyer:
+    template: |
+      I need this urgently. Price is not my main concern - availability is critical.
+    parameters:
+      - name: urgency_level
+        type: enum
+        values: [low, medium, high, critical]
+      - name: price_sensitivity
+        type: enum
+        values: [flexible, moderate, strict]
+      - name: negotiation_strategy
+        type: enum
+        values: [accommodating, firm, competitive]
+
+  price_negotiation:
+    template: |
+      Based on market analysis, I recommend {recommended_price}. This accounts for competition and your budget constraints.
+    parameters:
+      - name: expected_price
+        type: number
+        description: "Your target price"
+      - name: competition
+        type: enum
+        values: [none, low, medium, high]
+        description: "Market competition level"
+      - name: desperation
+        type: enum
+        values: [none, low, medium, high]
+        description: "Time pressure level"

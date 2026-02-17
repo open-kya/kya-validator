@@ -1,0 +1,64 @@
+# kya-validator/pyproject.toml
+[project]
+name = "kya-validator"
+version = "0.2.0"
+description = "Rust core KYA (Know Your Agent) validator with Python bindings, TEE support, and blockchain integration"
+authors = [{name = "KYA Contributors", email = "lkl@cph.ai"}]
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MPL-2.0"}
+keywords = ["kyc", "aml", "validator", "blockchain", "tee"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Mozilla Public License 2.0",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Office/Business :: Financial",
+]
+dependencies = [
+    "loguru>=0.7.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/open-kya/kya-validator"
+Repository = "https://github.com/open-kya/kya-validator"
+Documentation = "https://docs.rs/kya-validator"
+Issues = "https://github.com/open-kya/kya-validator/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3,<8.0",
+    "ruff>=0.1.8,<0.2",
+    "maturin>=1.6.0",
+]
+
+[tool.maturin]
+module-name = "kya_validator._core"
+bindings = "pyo3"
+features = ["python"]
+python-source = "bindings/python"
+
+[tool.setuptools]
+package-dir = {"kya_validator" = "bindings/python/kya_validator"}
+packages = ["kya_validator"]
+include-package-data = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["kya_validator", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "PL"]
+extend-select = ["W", "C4"]
+ignore = ["PLR0913", "PLR2004", "S101"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv.workspace]
+members = [".", "apps/demo_backend"]

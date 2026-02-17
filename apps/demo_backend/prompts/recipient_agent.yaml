@@ -1,0 +1,132 @@
+# Recipient Agent Prompts
+# This file contains all prompt templates for recipient (vendor) agent.
+
+# Template Variables
+variables:
+  - name: base_price
+    type: number
+    description: "Base price from pricing catalog"
+  - name: tier_discount
+    type: number
+    description: "Tier discount percentage (0.0-1.0)"
+  - name: final_price
+    type: number
+    description: "Calculated final price"
+  - name: currency
+    type: string
+    description: "Currency unit"
+
+system_prompt: |
+  You are a vendor agent for cloud infrastructure and AI services.
+  Your role is to:
+  1. Present product offerings and capabilities
+  2. Provide accurate quotes and pricing information
+  3. Negotiate terms with potential customers
+  4. Demonstrate compliance with industry standards and regulations
+  5. Help customers find right solutions for their needs
+
+  You should be helpful, professional, and focused on building trust.
+  Always be transparent about capabilities and limitations.
+
+stages:
+  greeting:
+    template: |
+      Welcome! I'm here to help with your procurement needs.
+      How can I assist you today?
+
+  product_info:
+    template: |
+      We offer {product_type} ranging from {min_model} to {max_model}.
+      Our {service_type} services support all major model frameworks.
+      We provide managed data pipeline solutions with {sla} SLA.
+
+  negotiation:
+    template: |
+      I can offer a {discount}% discount for annual commitments.
+      Let me check with our team about better pricing.
+      We can include premium support at no extra cost.
+
+  compliance:
+    template: |
+      We're {certification} certified and {regulation} compliant.
+      Our infrastructure is ISO 27001 certified.
+      We maintain full audit trails for all transactions.
+
+  closing:
+    template: |
+      Great! I'll prepare contract for your review.
+      Excellent! Let's move forward with agreement.
+      Perfect! I'll send over final documents.
+
+  agent_to_validation:
+    template: |
+      To validate your identity, please encrypt the following nonce using the public key from the KYA manifest:
+
+      Nonce: {nonce}
+
+      Public Key: {public_key}
+
+      Return your encrypted response in this format:
+      {{encrypted_nonce}}
+
+# Scenario Responses
+scenarios:
+  desperate_buyer_response:
+    template: |
+      I understand the urgency. We can prioritize your order for immediate provisioning.
+      Let me check availability for your requirements.
+      We have capacity available and can start deployment today.
+
+  price_negotiation_response:
+    template: |
+      I understand you're looking for competitive pricing. Let me review our options.
+      Given market competition, we can offer {discount_percent}% discount.
+      Your target price of {target_price} is achievable with our flexible terms.
+
+# API Specification
+api_spec:
+  template: |
+    ## API Specification
+
+    ### Endpoints
+
+    #### POST /api/v1/recipient/submit
+    Submit a KYA manifest for validation.
+
+    **Request:**
+    ```json
+    {
+      "manifest": {
+        "context": "...",
+        "policies": [...],
+        "resources": [...]
+      }
+    }
+    ```
+
+    #### GET /api/v1/recipient/status/{request_id}
+    Check validation status.
+
+    **Response:**
+    ```json
+    {
+      "request_id": "...",
+      "status": "pending|valid|invalid",
+      "validation_results": [...],
+      "timestamp": "..."
+    }
+    ```
+
+    ### Authentication
+    - No authentication required for public endpoints
+    - API key required for rate-limited endpoints
+
+    ### Rate Limits
+    - 100 requests/minute for public endpoints
+    - 1000 requests/minute with valid API key
+
+    ### Error Codes
+    - 400: Invalid request
+    - 401: Unauthorized
+    - 429: Rate limit exceeded
+    - 500: Internal server error

@@ -1,0 +1,51 @@
+# Pricing Catalog for Cloud Infrastructure and AI Services
+# This file defines the pricing structure for all available services
+
+services:
+  compute_gpu:
+    base_price: 2.50
+    currency: USD/hour
+    description: High-performance GPU compute for ML training and inference
+    tiers:
+      - name: on-demand
+        discount: 0
+      - name: reserved
+        discount: 0.15
+      - name: annual
+        discount: 0.25
+
+  inference_services:
+    base_price: 1.00
+    currency: USD/1000_requests
+    description: Low-latency inference endpoints for model serving
+    tiers:
+      - name: on-demand
+        discount: 0
+      - name: reserved
+        discount: 0.10
+      - name: annual
+        discount: 0.20
+
+  data_pipelines:
+    base_price: 0.50
+    currency: USD/GB_processed
+    description: Data processing and ETL pipelines
+    tiers:
+      - name: on-demand
+        discount: 0
+      - name: reserved
+        discount: 0.10
+      - name: annual
+        discount: 0.20
+
+  storage_solutions:
+    base_price: 0.10
+    currency: USD/GB/month
+    description: Scalable object storage with S3-compatible API
+    tiers:
+      - name: on-demand
+        discount: 0
+      - name: reserved
+        discount: 0.05
+      - name: annual
+        discount: 0.15

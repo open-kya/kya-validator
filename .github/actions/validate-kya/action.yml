@@ -1,0 +1,136 @@
+# kya-validator/.github/actions/validate-kya/action.yml
+name: 'Validate KYA Manifest'
+description: 'Validates a Know Your Agent (KYA) manifest against the KYA schema specification. See https://github.com/open-kya/kya-validator'
+branding:
+  icon: shield
+  color: green
+
+inputs:
+  manifest:
+    description: 'Path or URL to the KYA manifest JSON file'
+    required: true
+    default: 'manifest.json'
+  config:
+    description: 'Path to optional validation config JSON'
+    required: false
+    default: ''
+  mode:
+    description: 'Validation mode: strict, lenient, or self-audit'
+    required: false
+    default: 'strict'
+  check-signatures:
+    description: 'Whether to verify cryptographic signatures'
+    required: false
+    default: 'true'
+  check-links:
+    description: 'Whether to verify external links are accessible'
+    required: false
+    default: 'true'
+  check-attestations:
+    description: 'Whether to verify TEE attestations'
+    required: false
+    default: 'false'
+  version:
+    description: 'Validator version (commit SHA or tag)'
+    required: false
+    default: 'latest'
+  toolchain:
+    description: 'Rust toolchain version'
+    required: false
+    default: 'stable'
+
+outputs:
+  valid:
+    description: 'Whether the manifest is valid'
+    value: ${{ steps.validate.outputs.valid }}
+  errors:
+    description: 'Comma-separated list of validation errors'
+    value: ${{ steps.validate.outputs.errors }}
+  warnings:
+    description: 'Comma-separated list of validation warnings'
+    value: ${{ steps.validate.outputs.warnings }}
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout validator
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository }}
+        ref: ${{ inputs.version }}
+        path: kya-validator
+
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@master
+      with:
+        toolchain: ${{ inputs.toolchain }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Build validator
+      shell: bash
+      run: |
+        cd kya-validator
+        uv sync
+
+    - name: Validate manifest
+      id: validate
+      shell: bash
+      run: |
+        cd kya-validator
+        
+        MANIFEST="${{ inputs.manifest }}"
+        MODE="${{ inputs.mode }}"
+        CHECK_LINKS="${{ inputs.check-links }}"
+        CHECK_ATTEST="${{ inputs.check-attestations }}"
+        
+        # Build validation command
+        CMD="cargo run --features cli --"
+        
+        # Add manifest path
+        CMD="$CMD --manifest $MANIFEST"
+        
+        # Add mode
+        if [ "$MODE" = "lenient" ]; then
+          CMD="$CMD --mode lenient"
+        elif [ "$MODE" = "self-audit" ]; then
+          CMD="$CMD --mode self-audit"
+        fi
+        
+        # Add optional flags
+        if [ "$CHECK_LINKS" = "false" ]; then
+          CMD="$CMD --no-link-check"
+        fi
+        if [ "$CHECK_ATTEST" = "true" ]; then
+          CMD="$CMD --check-attestations"
+        fi
+        
+        # Run validation
+        echo "Running: $CMD"
+        OUTPUT=$($CMD 2>&1) || true
+        echo "Output: $OUTPUT"
+        
+        # Parse JSON results
+        if echo "$OUTPUT" | grep -q '"valid": true'; then
+          echo "valid=true" >> $GITHUB_OUTPUT
+          echo "errors=" >> $GITHUB_OUTPUT
+        else
+          echo "valid=false" >> $GITHUB_OUTPUT
+          ERRORS=$(echo "$OUTPUT" | grep -o '"errors":\[[^]]*\]' | head -1 || echo "")
+          echo "errors=$ERRORS" >> $GITHUB_OUTPUT
+        fi
+        
+        WARNINGS=$(echo "$OUTPUT" | grep -o '"warnings":\[[^]]*\]' | head -1 || echo "")
+        echo "warnings=$WARNINGS" >> $GITHUB_OUTPUT
+
+    - name: Report results
+      shell: bash
+      run: |
+        if [ "${{ steps.validate.outputs.valid }}" = "true" ]; then
+          echo "✅ KYA Manifest is valid"
+        else
+          echo "❌ KYA Manifest validation failed"
+          echo "Errors: ${{ steps.validate.outputs.errors }}"
+          exit 1
+        fi

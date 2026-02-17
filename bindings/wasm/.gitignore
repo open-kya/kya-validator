@@ -1,0 +1,16 @@
+# WASM build outputs
+dist/
+pkg-web/
+pkg-node/
+
+# Node
+node_modules/
+package-lock.json
+
+# Build artifacts
+*.tgz
+*.wasm
+
+# IDE
+*.swp
+*.swo

@@ -1,0 +1,87 @@
+{
+  "name": "@open-kya/kya-validator-wasm",
+  "version": "0.2.0",
+  "description": "WebAssembly bindings for KYA (Know Your Agent) Validator - browser and Node.js",
+  "keywords": [
+    "kya",
+    "validator",
+    "wasm",
+    "webassembly",
+    "agent",
+    "verification",
+    "did",
+    "attestation"
+  ],
+  "author": "Open KYA",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-kya/kya-validator.git",
+    "directory": "bindings/wasm"
+  },
+  "homepage": "https://github.com/open-kya/kya-validator#readme",
+  "bugs": {
+    "url": "https://github.com/open-kya/kya-validator/issues"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/browser.js",
+      "node": "./dist/node.js",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js"
+    },
+    "./web": {
+      "types": "./pkg-web/kya_validator.d.ts",
+      "import": "./pkg-web/kya_validator.js"
+    },
+    "./pkg": {
+      "types": "./pkg-node/kya_validator.d.ts",
+      "import": "./pkg-node/kya_validator.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "pkg-web",
+    "pkg-node",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:wasm-web": "wasm-pack build --target web --out-dir pkg-web --out-name kya_validator --release",
+    "build:wasm-node": "wasm-pack build --target nodejs --out-dir pkg-node --out-name kya_validator --release",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:all": "npm run build:wasm-web && npm run build:wasm-node && npm run build:ts",
+    "clean": "rm -rf dist pkg-web pkg-node *.tgz",
+    "pack:dry-run": "npm run build:all && npm pack --dry-run 2>&1 | head -50",
+    "pack:artifact": "npm run build:all && npm pack",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run build:all"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "peerDependencies": {},
+  "sideEffects": false
+}

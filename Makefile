@@ -1,0 +1,145 @@
+# kya-validator/Makefile
+PYTHON ?= $(shell (pyenv which python >/dev/null 2>&1 && pyenv which python) || which python3)
+
+.PHONY: build test fmt lint python release verify demo-install demo-backend demo-frontend run fix-verify install-tools clean
+
+build:
+	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 PYO3_PYTHON=$(PYTHON) cargo build --features cli
+
+test:
+	cargo test --features cli
+
+fmt:
+	cargo fmt
+
+lint:
+	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 PYO3_PYTHON=$(PYTHON) cargo clippy --all-targets --all-features -- -D warnings
+
+python:
+	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 PYO3_PYTHON=$(PYTHON) uv tool run maturin develop
+
+release: build
+	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 PYO3_PYTHON=$(PYTHON) uv tool run maturin build --release
+
+install-tools:
+	uv tool install maturin
+
+demo-install:
+	$(MAKE) -C apps/demo_backend install
+
+demo-backend:
+	$(MAKE) -C apps/demo_backend run
+
+demo-frontend:
+	cd apps/ui && npm run dev
+
+# Run both backend and frontend concurrently with named, colored streams
+# -k: kill all processes if one exits (except on Ctrl-C which kills all)
+run:
+	@echo "Starting backend and frontend concurrently..."
+	npx concurrently --kill-others-on-fail --names "backend,frontend" --prefix-colors "bgBlue.bold,bgMagenta.bold" \
+		"$(MAKE) -C apps/demo_backend run" \
+		"cd apps/ui && npm run dev"
+
+# Multi-stage fix and verification pipeline
+# Tracks failures across all stages and reports summary at end
+# Critical stages (build, test) stop the pipeline on failure
+# Non-critical stages (lint, install) continue but are tracked
+# Dependent stages are skipped if prerequisites fail
+fix-verify:
+	@echo "=== Starting verification pipeline ==="
+	@FAILED_STAGES=""; \
+	CRITICAL_FAILED=0; \
+	SKIP_REMAINDER=0; \
+	\
+	echo "=== Stage 1/7: Rust build ==="; \
+	if $(MAKE) build; then \
+		echo "✅ Stage 1 passed"; \
+	else \
+		echo "❌ Stage 1 FAILED"; \
+		FAILED_STAGES="$$FAILED_STAGES 1"; \
+		CRITICAL_FAILED=1; \
+		SKIP_REMAINDER=1; \
+	fi; \
+	\
+	if [ $$SKIP_REMAINDER -eq 0 ]; then \
+		echo "=== Stage 2/7: Rust lint ==="; \
+		if $(MAKE) lint; then \
+			echo "✅ Stage 2 passed"; \
+		else \
+			echo "⚠️  Stage 2 had issues (non-fatal)"; \
+		fi; \
+	else \
+		echo "=== Stage 2/7: Rust lint [SKIPPED] ==="; \
+	fi; \
+	\
+	if [ $$SKIP_REMAINDER -eq 0 ]; then \
+		echo "=== Stage 3/7: Rust test ==="; \
+		if $(MAKE) test; then \
+			echo "✅ Stage 3 passed"; \
+		else \
+			echo "❌ Stage 3 FAILED"; \
+			CRITICAL_FAILED=1; \
+			SKIP_REMAINDER=1; \
+		fi; \
+	else \
+		echo "=== Stage 3/7: Rust test [SKIPPED] ==="; \
+	fi; \
+	\
+	if [ $$SKIP_REMAINDER -eq 0 ]; then \
+		echo "=== Stage 4/7: Backend install/setup ==="; \
+		if $(MAKE) demo-install; then \
+			echo "✅ Stage 4 passed"; \
+		else \
+			echo "⚠️  Stage 4 had issues (non-fatal)"; \
+		fi; \
+	else \
+		echo "=== Stage 4/7: Backend install/setup [SKIPPED] ==="; \
+	fi; \
+	\
+	if [ $$SKIP_REMAINDER -eq 0 ]; then \
+		echo "=== Stage 5/7: Backend test ==="; \
+		if $(MAKE) -C apps/demo_backend test; then \
+			echo "✅ Stage 5 passed"; \
+		else \
+			echo "❌ Stage 5 FAILED"; \
+			CRITICAL_FAILED=1; \
+			SKIP_REMAINDER=1; \
+		fi; \
+	else \
+		echo "=== Stage 5/7: Backend test [SKIPPED] ==="; \
+	fi; \
+	\
+	if [ $$SKIP_REMAINDER -eq 0 ]; then \
+		echo "=== Stage 6/7: Frontend lint ==="; \
+		if (cd apps/ui && npm run lint); then \
+			echo "✅ Stage 6 passed"; \
+		else \
+			echo "⚠️  Stage 6 had issues (non-fatal)"; \
+		fi; \
+	else \
+		echo "=== Stage 6/7: Frontend lint [SKIPPED] ==="; \
+	fi; \
+	\
+	if [ $$SKIP_REMAINDER -eq 0 ]; then \
+		echo "=== Stage 7/7: Frontend unit test ==="; \
+		if (cd apps/ui && npm run test:unit); then \
+			echo "✅ Stage 7 passed"; \
+		else \
+			echo "❌ Stage 7 FAILED"; \
+			CRITICAL_FAILED=1; \
+		fi; \
+	else \
+		echo "=== Stage 7/7: Frontend unit test [SKIPPED] ==="; \
+	fi; \
+	\
+	if [ $$CRITICAL_FAILED -eq 0 ]; then \
+		echo "=== ✅ All critical stages passed ==="; \
+	else \
+		echo "=== ❌ One or more critical stages failed ==="; \
+	fi; \
+	exit $$CRITICAL_FAILED
+
+# Remove all gitignored files and directories (useful before copying repo)
+clean:
+	git clean -fdX

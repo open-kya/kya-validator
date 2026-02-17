@@ -1,0 +1,81 @@
+# apps/demo_backend/pyproject.toml
+
+[project]
+name = "kya-validator-demo-backend"
+version = "0.1.0"
+description = "FastAPI backend for KYA Validator live demo with agent-based procurement workflows"
+authors = [{name = "KYA Validator Team", email = "lkl@cph.ai"}]
+readme = "README.md"
+license = {text = "MPL-2.0"}
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "fastapi >=0.104.1,<0.105",
+    "uvicorn[standard] >=0.24.0,<0.25",
+    "websockets >=12.0,<13.0",
+    "pydantic >=2.5.0,<3.0",
+    "pydantic-settings >=2.1.0,<3.0",
+    "python-multipart >=0.0.6,<0.1",
+    "aiofiles >=23.2.1,<24.0",
+    "httpx >=0.25.0,<0.26",
+    "pyyaml >=6.0.1,<7.0",
+    "cryptography >=41.0.0,<42.0",
+    "loguru >=0.7.0,<0.8",
+    "langchain >=0.1.0,<0.2",
+    "langchain-openai >=0.0.2,<0.1",
+    "langchain-google-vertexai >=0.0.5,<0.1",
+    "langgraph >=0.0.20,<0.1",
+    "openai >=1.0.0,<2.0",
+    "kya-validator",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest >=7.4.3,<8.0",
+    "pytest-asyncio >=0.21.1,<0.22",
+    "pytest-cov >=4.1.0,<5.0",
+    "black >=23.12.0,<24.0",
+    "ruff >=0.1.8,<0.2",
+    "mypy >=1.7.1,<2.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["app"]
+
+#DELETE_ME: The following workspace reference won't work after publishing.
+# Make sure kya-validator is already published to PyPI before removing this.
+[tool.uv.sources]
+kya-validator = { workspace = true }
+# END_DELETE_ME
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --strict-markers"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "websocket: WebSocket tests",
+]

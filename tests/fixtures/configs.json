@@ -1,0 +1,174 @@
+[
+  {
+    "id": "C01",
+    "name": "client-basic",
+    "description": "Baseline client audit with required fields and proof enforcement.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": true,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": [],
+      "requiredVcTypes": []
+    }
+  },
+  {
+    "id": "C02",
+    "name": "require-legal-entity",
+    "description": "Client requires a LegalEntityCredential VC.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": [],
+      "requiredVcTypes": ["LegalEntityCredential"]
+    }
+  },
+  {
+    "id": "C03",
+    "name": "allowlist-controller",
+    "description": "Client accepts only the full example controller.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": ["did:web:jit-procurement.omniworks.example"],
+      "requiredVcTypes": []
+    }
+  },
+  {
+    "id": "C04",
+    "name": "allowlist-and-legal",
+    "description": "Client requires legal entity VC and allowlisted controller.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": ["did:web:jit-procurement.omniworks.example"],
+      "requiredVcTypes": ["LegalEntityCredential"]
+    }
+  },
+  {
+    "id": "C05",
+    "name": "solvency-pair",
+    "description": "Client requires solvencyAddress and solvencyChain together.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [["/solvencyAddress", "/solvencyChain"]],
+      "allowedControllers": [],
+      "requiredVcTypes": []
+    }
+  },
+  {
+    "id": "C06",
+    "name": "external-attestation",
+    "description": "Client requires a reachable attestation URL containing Intel.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": true,
+      "linkChecks": [
+        {"jsonPointer": "/deployment/tee/attestationUri", "requiredContains": "Intel"}
+      ],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": [],
+      "requiredVcTypes": []
+    }
+  },
+  {
+    "id": "C07",
+    "name": "relaxed-proof",
+    "description": "Client does not require proof threshold but still validates schema.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": false,
+      "requiredFieldPairs": [],
+      "allowedControllers": [],
+      "requiredVcTypes": []
+    }
+  },
+  {
+    "id": "C08",
+    "name": "version-strict",
+    "description": "Client only accepts an unsupported KYA version.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["2.0"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": [],
+      "requiredVcTypes": []
+    }
+  },
+  {
+    "id": "C09",
+    "name": "controller-relaxed",
+    "description": "Client allows any controller but enforces legal entity VC.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": [],
+      "requiredVcTypes": ["LegalEntityCredential"]
+    }
+  },
+  {
+    "id": "C10",
+    "name": "multi-vc",
+    "description": "Client requires legal entity + insurance VCs and allowlisted controller.",
+    "config": {
+      "mode": "clientAudit",
+      "allowedKyaVersions": ["1.1"],
+      "requiredFields": ["/agentId", "/proof"],
+      "enforceControllerMatch": false,
+      "checkExternalLinks": false,
+      "linkChecks": [],
+      "requireAllProofs": true,
+      "requiredFieldPairs": [],
+      "allowedControllers": ["did:web:jit-procurement.omniworks.example"],
+      "requiredVcTypes": ["LegalEntityCredential", "InsuranceCredential"]
+    }
+  }
+]
