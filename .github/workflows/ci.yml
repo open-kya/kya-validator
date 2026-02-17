@@ -1,12 +1,13 @@
 # kya-validator/.github/workflows/ci.yml
 name: CI
 
-# Manual trigger only - no automatic runs
+# TEMPORARY: Publishing disabled - use publish-tokens.yml workflow instead
+# The enable_publish input is disabled until Trusted Publishing is configured.
 on:
   workflow_dispatch:
     inputs:
       enable_publish:
-        description: 'Enable publish to crates.io, PyPI, and GitHub Releases'
+        description: 'DISABLED - Use publish-tokens.yml workflow instead'
         type: boolean
         default: false
 

@@ -1,0 +1,149 @@
+# .github/workflows/publish-tokens.yml
+# TEMPORARY: Token-based publishing workflow
+# This workflow uses secret tokens instead of Trusted Publishing (OIDC).
+# Use this until Trusted Publishing is configured for all registries.
+# See PUBLISH-STEPS.md for details.
+
+name: Publish (Token-Based)
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_crates:
+        description: 'Publish to crates.io'
+        type: boolean
+        default: true
+      publish_npm:
+        description: 'Publish to npm (WASM package)'
+        type: boolean
+        default: true
+      publish_pypi:
+        description: 'Publish to PyPI'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  publish-crates:
+    name: Publish to crates.io
+    if: github.event.inputs.publish_crates == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Publish to crates.io
+        run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## crates.io Publish Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Published \`kya-validator\` to crates.io" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package: https://crates.io/crates/kya-validator" >> $GITHUB_STEP_SUMMARY
+
+  publish-npm:
+    name: Publish WASM to npm
+    if: github.event.inputs.publish_npm == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: wasm-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install wasm-pack
+        run: cargo install wasm-pack --locked
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+          cache-dependency-path: bindings/wasm/package-lock.json
+
+      - name: Install npm dependencies
+        working-directory: bindings/wasm
+        run: npm ci || npm install
+
+      - name: Build WASM (all targets)
+        working-directory: bindings/wasm
+        run: npm run build:all
+
+      - name: Publish to npm
+        working-directory: bindings/wasm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## npm Publish Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Published \`@open-kya/kya-validator-wasm\` to npm" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package: https://www.npmjs.com/package/@open-kya/kya-validator-wasm" >> $GITHUB_STEP_SUMMARY
+
+  publish-pypi:
+    name: Publish to PyPI
+    if: github.event.inputs.publish_pypi == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Build wheels
+        run: |
+          uv sync
+          uv run maturin build --release
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: target/wheels
+          password: ${{ secrets.PYPI_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## PyPI Publish Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Published \`kya-validator\` to PyPI" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package: https://pypi.org/project/kya-validator/" >> $GITHUB_STEP_SUMMARY

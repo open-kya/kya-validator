@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       enable_publish:
-        description: 'Publish to npm (requires Trusted Publisher configured)'
+        description: 'DISABLED - Use publish-tokens.yml workflow instead'
         type: boolean
         default: false
 
