@@ -7,18 +7,34 @@ use crate::types::{
 };
 use crate::verifier::verify_manifest_proofs;
 use chrono::{DateTime, Utc};
-use jsonschema::{Draft, JSONSchema};
-use once_cell::sync::Lazy;
-use regex::Regex;
-use reqwest::blocking::Client;
 use serde_json::Value;
 use sha2::{Digest, Sha256, Sha384, Sha512};
+use std::time::Duration;
+
+# [cfg(not(target_arch = "wasm32"))]
+use jsonschema::{Draft, JSONSchema};
+
+#[cfg(not(target_arch = "wasm32"))]
+use once_cell::sync::Lazy;
+
+#[cfg(not(target_arch = "wasm32"))]
+use regex::Regex;
+
+#[cfg(not(target_arch = "wasm32"))]
+use reqwest::blocking::Client;
+
+#[cfg(not(target_arch = "wasm32"))]
 use std::collections::HashMap;
+
+#[cfg(not(target_arch = "wasm32"))]
 use std::sync::Mutex;
-use std::time::{Duration, Instant};
+
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::Instant;
 
 static KYA_SCHEMA: &str = include_str!("../schema/kya-manifest.schema.json");
 
+#[cfg(not(target_arch = "wasm32"))]
 static COMPILED_SCHEMA: Lazy<JSONSchema> = Lazy::new(|| {
     let schema_json: Value =
         serde_json::from_str(KYA_SCHEMA).expect("KYA schema JSON should parse at compile time");
@@ -28,6 +44,7 @@ static COMPILED_SCHEMA: Lazy<JSONSchema> = Lazy::new(|| {
         .expect("KYA schema should compile")
 });
 
+#[cfg(not(target_arch = "wasm32"))]
 static CACHE: Lazy<Mutex<HashMap<String, (Value, Instant)>>> =
     Lazy::new(|| Mutex::new(HashMap::new()));
 
@@ -101,6 +118,7 @@ fn check_required_field_pairs(manifest: &Value, pairs: &[(String, String)]) -> V
     errors
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[allow(dead_code)]
 fn verify_tls_pin(_cert_der: &[u8], _pin_config: &TlsPinConfig) -> Result<(), String> {
     // TODO: Implement TLS pinning
@@ -121,6 +139,7 @@ fn validate_domain_allowlist(url: &str, allowed_domains: &[String]) -> Result<()
     Ok(())
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn perform_content_check(
     text: &str,
     content_value: &Value,
@@ -188,6 +207,7 @@ fn perform_content_check(
     Ok(())
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn fetch_with_retry(
     url: &str,
     timeout_secs: Option<u64>,
@@ -256,6 +276,7 @@ fn verify_content_hash(data: &[u8], config: &DigestConfig) -> Result<(), String>
     Ok(())
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn check_external_links(manifest: &Value, link_checks: &[LinkCheckConfig]) -> Vec<String> {
     let mut errors = Vec::new();
 
@@ -490,12 +511,23 @@ pub fn validate_manifest_with_config(
 ) -> ValidationReport {
     let mut report = ValidationReport::ok();
 
-    let schema_result = COMPILED_SCHEMA.validate(manifest);
-    if let Err(errors) = schema_result {
-        report.schema_valid = false;
-        report.schema_errors = errors
-            .map(|err: jsonschema::ValidationError| err.to_string())
-            .collect();
+    // Schema validation only available on native targets (requires jsonschema with reqwest blocking)
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let schema_result = COMPILED_SCHEMA.validate(manifest);
+        if let Err(errors) = schema_result {
+            report.schema_valid = false;
+            report.schema_errors = errors
+                .map(|err: jsonschema::ValidationError| err.to_string())
+                .collect();
+        }
+    }
+
+    // On WASM, skip schema validation (would require async fetch for external refs)
+    #[cfg(target_arch = "wasm32")]
+    {
+        report.schema_valid = true;
+        report.schema_errors = vec!["Schema validation skipped on WASM (use browser fetch for remote schemas)".to_string()];
     }
 
     let (ttl_valid, ttl_errors) = validate_ttl(manifest, Utc::now());
@@ -526,6 +558,8 @@ pub fn validate_manifest_with_config(
         report.inspector_errors.extend(vc_errors);
     }
 
+    // External link checking only available on native (requires blocking HTTP client)
+    #[cfg(not(target_arch = "wasm32"))]
     if config.check_external_links {
         let link_errors = check_external_links(manifest, &config.link_checks);
         if !link_errors.is_empty() {

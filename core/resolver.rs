@@ -1,6 +1,8 @@
 use crate::types::{DidDocument, KeyType, Manifest, ResolvedKey, VerificationMethod};
-use reqwest::blocking::Client;
 use std::collections::HashMap;
+
+#[cfg(not(target_arch = "wasm32"))]
+use reqwest::blocking::Client;
 
 pub(crate) fn resolve_verification_methods(
     manifest: &Manifest,
@@ -58,6 +60,7 @@ fn key_type_from_multicodec(code: u64) -> Result<KeyType, String> {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn resolve_did_web(did: &str) -> Result<DidDocument, String> {
     let did_parts = did
         .strip_prefix("did:web:")
@@ -81,6 +84,11 @@ pub(crate) fn resolve_did_web(did: &str) -> Result<DidDocument, String> {
     response
         .json::<DidDocument>()
         .map_err(|err| format!("Failed to parse DID document: {}", err))
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn resolve_did_web(_did: &str) -> Result<DidDocument, String> {
+    Err("DID web resolution not supported on WASM - use browser fetch".to_string())
 }
 
 pub(crate) fn resolve_did_key(did: &str) -> Result<ResolvedKey, String> {

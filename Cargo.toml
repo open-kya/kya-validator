@@ -1,3 +1,6 @@
+# Cargo.toml
+# Workspace manifest for kya-validator
+
 [package]
 name = "kya-validator"
 version = "0.2.0"
@@ -14,42 +17,33 @@ categories = ["cryptography", "authentication", "finance", "wasm"]
 # Core dependencies
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tokio = { version = "1.0", features = ["full"] }
 
 # CLI
 clap = { version = "4.4", features = ["derive"], optional = true }
 chrono = { version = "0.4", features = ["serde"] }
 thiserror = "1.0"
 anyhow = "1.0"
-getrandom = { version = "0.3", features = ["wasm_js"] }
 
-# HTTP and networking
-reqwest = { version = "0.11", features = ["json", "blocking"] }
+# HTTP and networking (native only - WASM uses fetch API)
 url = "2.4"
-
-# JSON schema and validation
-jsonschema = "0.17"
-regex = "1.10"
-once_cell = "1.19"
-
-# Encoding
-base64 = "0.21"
-hex = "0.4"
-bs58 = "0.5"
-serde_jcs = "0.1"
 
 # Cryptography and randomness
 rand = "0.8"
-
-# TEE attestation (optional for WASM)
-sgx_types = { version = "1.1", optional = true }
-mc-sgx-dcap-quoteverify = { version = "0.12", optional = true }
 
 # Cryptography
 ed25519-dalek = "2.0"
 k256 = "0.13"
 sha2 = "0.10.8"
 sha3 = "0.10.8"
+
+# Encoding
+base64 = "0.21"
+hex = "0.4"
+bs58 = "0.5"
+
+# TEE attestation (optional for WASM)
+sgx_types = { version = "1.1", optional = true }
+mc-sgx-dcap-quoteverify = { version = "0.12", optional = true }
 
 # Blockchain (optional for WASM)
 alloy-sol-types = { version = "0.7", optional = true }
@@ -60,6 +54,20 @@ wasm-bindgen-futures = "0.4"
 
 # Python (optional)
 pyo3 = { version = "0.20", features = ["anyhow"], optional = true }
+
+# Native-only dependencies (Tokio with full features for non-WASM targets)
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+jsonschema = "0.17"
+regex = "1.10"
+once_cell = "1.19"
+serde_jcs = "0.1"
+
+# WASM-specific dependencies (Tokio without net features that require mio)
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tokio = { version = "1.0", default-features = false, features = ["sync", "macros", "io-util", "rt", "time"] }
+getrandom = { version = "0.2", features = ["js"] }
 
 [features]
 default = []
@@ -81,4 +89,3 @@ required-features = ["cli"]
 opt-level = 3
 lto = true
 codegen-units = 1
-

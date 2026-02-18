@@ -5,6 +5,7 @@ use pyo3::exceptions::PyValueError;
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
 
+#[cfg(not(target_arch = "wasm32"))]
 pub mod blockchain;
 pub mod inspector;
 pub mod policy;

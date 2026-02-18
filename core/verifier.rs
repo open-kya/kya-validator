@@ -3,14 +3,30 @@ use crate::types::{CryptoReport, KeyType, Manifest, ResolvedKey, ValidationConfi
 use ed25519_dalek::{Signature as Ed25519Signature, VerifyingKey as Ed25519VerifyingKey};
 use k256::ecdsa::signature::Verifier;
 use k256::ecdsa::{Signature as SecpSignature, VerifyingKey as SecpVerifyingKey};
+
+#[cfg(not(target_arch = "wasm32"))]
 use serde_jcs::to_vec as to_jcs_vec;
 
+#[cfg(not(target_arch = "wasm32"))]
 fn canonicalize_manifest(manifest: &serde_json::Value) -> Result<Vec<u8>, String> {
     let mut clone = manifest.clone();
     if let serde_json::Value::Object(map) = &mut clone {
         map.remove("proof");
     }
     to_jcs_vec(&clone).map_err(|err| format!("Canonicalization failed: {}", err))
+}
+
+#[cfg(target_arch = "wasm32")]
+fn canonicalize_manifest(manifest: &serde_json::Value) -> Result<Vec<u8>, String> {
+    // WASM fallback: use basic JSON serialization without full JCS
+    let mut clone = manifest.clone();
+    if let serde_json::Value::Object(map) = &mut clone {
+        map.remove("proof");
+    }
+    // Sort keys for deterministic output (simplified JCS-like behavior)
+    serde_json::to_string(&clone)
+        .map(|s| s.into_bytes())
+        .map_err(|err| format!("Canonicalization failed: {}", err))
 }
 
 fn verify_ed25519(public_key: &[u8], signature: &[u8], message: &[u8]) -> Result<(), String> {
