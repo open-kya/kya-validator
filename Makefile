@@ -1,7 +1,21 @@
 # kya-validator/Makefile
 PYTHON ?= $(shell (pyenv which python >/dev/null 2>&1 && pyenv which python) || which python3)
 
-.PHONY: build test fmt lint python release verify demo-install demo-backend demo-frontend run fix-verify install-tools clean
+.PHONY: build test fmt lint python release verify demo-install demo-backend demo-frontend run fix-verify install-tools clean get-lastest-schema install
+
+# Schema URL (raw content URL for downloading)
+# TODO: Update this URL when the Open KYA standard repo is available
+KYA_SCHEMA_URL := https://raw.githubusercontent.com/fut-ai/open-kya-standard/main/schema/kya-manifest.schema.json
+
+# Download latest KYA schema from Open KYA standard repo
+get-lastest-schema:
+	@echo "Downloading latest KYA schema from $(KYA_SCHEMA_URL)..."
+	@curl -fsSL "$(KYA_SCHEMA_URL)" -o schema/kya-manifest.schema.json
+	@echo "✅ Schema updated: schema/kya-manifest.schema.json"
+
+# Install: refresh schema first, then run setup
+install: get-lastest-schema
+	@echo "Running install..."
 
 build:
 	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 PYO3_PYTHON=$(PYTHON) cargo build --features cli

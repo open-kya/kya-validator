@@ -203,7 +203,7 @@ cargo login <crates-io-token>
 cargo publish
 
 # Build and publish Python package
-uv sync
+uv sync --extra dev
 uv run maturin build --release
 twine upload dist/*
 ```

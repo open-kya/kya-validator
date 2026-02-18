@@ -17,7 +17,7 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
 
-static KYA_SCHEMA: &str = include_str!("../../kya-standard/schema/kya-manifest.schema.json");
+static KYA_SCHEMA: &str = include_str!("../schema/kya-manifest.schema.json");
 
 static COMPILED_SCHEMA: Lazy<JSONSchema> = Lazy::new(|| {
     let schema_json: Value =

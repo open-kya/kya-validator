@@ -1,0 +1,7 @@
+# .cargo/config.toml
+# Repository-level Cargo configuration for consistent builds
+
+# Configure getrandom backend for WASM targets
+# getrandom0.3.x requires explicit backend selection for wasm32-unknown-unknown
+[target.wasm32-unknown-unknown]
+rustflags = "--cfg getrandom_backend=\"wasm_js\""
