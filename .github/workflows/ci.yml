@@ -144,12 +144,16 @@ jobs:
         run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
 
   # Publish Python package to PyPI using trusted publishing (OIDC)
+  # Builds wheels for both Linux (x86_64) and macOS (ARM64)
   # (requires enable_publish: true)
   publish-pypi:
-    name: Publish Python Package
+    name: Publish Python Package (${{ matrix.os }})
     needs: [python-bindings]
     if: github.event.inputs.enable_publish == 'true'
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     # Trusted publishing uses OIDC - no token needed, but need permissions
     permissions:
       id-token: write  # Required for OIDC trusted publishing to PyPI
@@ -160,6 +164,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
 
       - name: Build wheels
         uses: astral-sh/setup-uv@v4
@@ -177,11 +186,15 @@ jobs:
           packages-dir: target/wheels
 
   # Create GitHub release with assets (requires enable_publish: true)
+  # Builds wheels for both Linux (x86_64) and macOS (ARM64)
   github-release:
-    name: Create GitHub Release
+    name: Create GitHub Release (${{ matrix.os }})
     needs: [publish-crates, publish-pypi]
     if: github.event.inputs.enable_publish == 'true'
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: write
     steps:
