@@ -1,6 +1,6 @@
 {
   "name": "@open-kya/kya-validator-wasm",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "WebAssembly bindings for KYA (Know Your Agent) Validator - browser and Node.js",
   "keywords": [
     "kya",

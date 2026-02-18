@@ -45,16 +45,50 @@ jobs:
             exit 1
           fi
 
-      - name: Verify version matches Cargo.toml
+      - name: Verify version matches all manifests
         run: |
-          CARGO_VERSION=$(grep '^version =' Cargo.toml | head -1 | sed 's/.*"\(.*\)".*/\1/')
           RELEASE_VERSION="${{ steps.version.outputs.version }}"
+          ERRORS=0
+          
+          # Check Cargo.toml
+          CARGO_VERSION=$(grep '^version =' Cargo.toml | head -1 | sed 's/.*"\(.*\)".*/\1/')
           if [ "$CARGO_VERSION" != "$RELEASE_VERSION" ]; then
-            echo "⚠️ Version mismatch: Cargo.toml has $CARGO_VERSION, release tag is $RELEASE_VERSION"
-            echo "Please update Cargo.toml version before creating release"
+            echo "❌ Cargo.toml: $CARGO_VERSION (expected $RELEASE_VERSION)"
+            ERRORS=1
+          else
+            echo "✅ Cargo.toml: $CARGO_VERSION"
+          fi
+          
+          # Check pyproject.toml
+          PYPROJECT_VERSION=$(grep '^version =' pyproject.toml | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          if [ "$PYPROJECT_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "❌ pyproject.toml: $PYPROJECT_VERSION (expected $RELEASE_VERSION)"
+            ERRORS=1
+          else
+            echo "✅ pyproject.toml: $PYPROJECT_VERSION"
+          fi
+          
+          # Check bindings/wasm/package.json
+          NPM_VERSION=$(grep '"version":' bindings/wasm/package.json | head -1 | sed 's/.*: *"\([^"]*\)".*/\1/')
+          if [ "$NPM_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "❌ bindings/wasm/package.json: $NPM_VERSION (expected $RELEASE_VERSION)"
+            ERRORS=1
+          else
+            echo "✅ bindings/wasm/package.json: $NPM_VERSION"
+          fi
+          
+          if [ $ERRORS -eq 1 ]; then
+            echo ""
+            echo "⚠️ Version mismatch detected!"
+            echo "Please update all manifest files before creating release:"
+            echo "  - Cargo.toml"
+            echo "  - pyproject.toml"
+            echo "  - bindings/wasm/package.json"
             exit 1
           fi
-          echo "✅ Version matches: $CARGO_VERSION"
+          
+          echo ""
+          echo "✅ All versions match: $RELEASE_VERSION"
 
   # Publish Rust crate to crates.io
   publish-crates:
