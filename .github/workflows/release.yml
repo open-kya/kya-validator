@@ -1,0 +1,233 @@
+# kya-validator/.github/workflows/release.yml
+# Automated publishing triggered by GitHub releases
+# When a release is created, publishes to all registries with the release version
+
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write  # Required for OIDC trusted publishing to PyPI
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # Extract and validate version from release tag
+  prepare:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version_valid: ${{ steps.version.outputs.valid }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          # Remove 'v' prefix if present (e.g., v0.2.0 -> 0.2.0)
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Validate semver format
+          if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "✅ Version: $VERSION (valid semver)"
+          else
+            echo "valid=false" >> $GITHUB_OUTPUT
+            echo "❌ Version: $VERSION (invalid semver)"
+            exit 1
+          fi
+
+      - name: Verify version matches Cargo.toml
+        run: |
+          CARGO_VERSION=$(grep '^version =' Cargo.toml | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          RELEASE_VERSION="${{ steps.version.outputs.version }}"
+          if [ "$CARGO_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "⚠️ Version mismatch: Cargo.toml has $CARGO_VERSION, release tag is $RELEASE_VERSION"
+            echo "Please update Cargo.toml version before creating release"
+            exit 1
+          fi
+          echo "✅ Version matches: $CARGO_VERSION"
+
+  # Publish Rust crate to crates.io
+  publish-crates:
+    name: Publish to crates.io
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Publish to crates.io
+        run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## crates.io Publish Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Published \`kya-validator\` v${{ needs.prepare.outputs.version }} to crates.io" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package: https://crates.io/crates/kya-validator" >> $GITHUB_STEP_SUMMARY
+
+  # Publish WASM package to npm
+  publish-npm:
+    name: Publish WASM to npm
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: wasm-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install wasm-pack
+        run: cargo install wasm-pack --locked
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build WASM package
+        run: wasm-pack build --scope open-kya --release
+
+      - name: Update package.json version
+        working-directory: pkg
+        run: |
+          VERSION="${{ needs.prepare.outputs.version }}"
+          # Update version in package.json
+          jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+          echo "✅ Updated pkg/package.json version to $VERSION"
+
+      - name: Publish to npm
+        working-directory: pkg
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+      - name: Summary
+        run: |
+          echo "## npm Publish Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Published \`@open-kya/kya-validator-wasm\` v${{ needs.prepare.outputs.version }} to npm" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package: https://www.npmjs.com/package/@open-kya/kya-validator-wasm" >> $GITHUB_STEP_SUMMARY
+
+  # Publish Python wheels to PyPI (Linux + macOS ARM64)
+  publish-pypi:
+    name: Publish to PyPI (${{ matrix.os }})
+    needs: prepare
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    environment:
+      name: pypi
+      url: https://pypi.org/p/kya-validator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Build wheel
+        run: |
+          uv sync --extra dev
+          uv run maturin build --release
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: target/wheels
+
+      - name: Summary
+        shell: bash
+        run: |
+          OS_NAME="${{ matrix.os }}"
+          if [ "$OS_NAME" == "ubuntu-latest" ]; then
+            PLATFORM="Linux x86_64"
+          else
+            PLATFORM="macOS ARM64"
+          fi
+          echo "## PyPI Publish Summary ($PLATFORM)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Published \`kya-validator\` v${{ needs.prepare.outputs.version }} ($PLATFORM wheel) to PyPI" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Package: https://pypi.org/project/kya-validator/${{ needs.prepare.outputs.version }}/#files" >> $GITHUB_STEP_SUMMARY
+
+  # Upload wheels to GitHub Release
+  upload-assets:
+    name: Upload Release Assets
+    needs: [prepare, publish-pypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Build all wheels
+        run: |
+          uv sync --extra dev
+          uv run maturin build --release
+
+      - name: Upload wheels to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/wheels/*.whl
+          fail_on_unmatched_files: true
+
+      - name: Summary
+        run: |
+          echo "## Release Assets Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Uploaded wheels to GitHub Release v${{ needs.prepare.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Release: ${{ github.event.release.html_url }}" >> $GITHUB_STEP_SUMMARY
