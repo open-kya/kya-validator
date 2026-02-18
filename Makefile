@@ -1,7 +1,7 @@
 # kya-validator/Makefile
 PYTHON ?= $(shell (pyenv which python >/dev/null 2>&1 && pyenv which python) || which python3)
 
-.PHONY: build test fmt lint python release verify demo-install demo-backend demo-frontend run fix-verify install-tools clean get-lastest-schema install
+.PHONY: build test fmt lint python release verify demo-install demo-backend demo-frontend run fix-verify install-tools clean get-lastest-schema install check-version sync-version
 
 # Schema URL (raw content URL for downloading)
 # TODO: Update this URL when the Open KYA standard repo is available
@@ -37,6 +37,48 @@ release: build
 
 install-tools:
 	uv tool install maturin
+
+# Check that all version files are synchronized
+check-version:
+	@echo "Checking version consistency across all manifest files..."
+	@CARGO_VERSION=$$(grep '^version =' Cargo.toml | head -1 | sed 's/.*"\(.*\)".*/\1/'); \
+	PYPROJECT_VERSION=$$(grep '^version =' pyproject.toml | head -1 | sed 's/.*"\(.*\)".*/\1/'); \
+	NPM_VERSION=$$(grep '"version":' bindings/wasm/package.json | head -1 | sed 's/.*: *"\([^"]*\)".*/\1/'); \
+	LOCK_VERSION=$$(grep -A1 '^name = "kya-validator"$$' Cargo.lock | grep '^version =' | head -1 | sed 's/.*"\(.*\)".*/\1/'); \
+	ERRORS=0; \
+	echo ""; \
+	echo "Cargo.toml:           $$CARGO_VERSION"; \
+	echo "pyproject.toml:       $$PYPROJECT_VERSION"; \
+	echo "package.json:         $$NPM_VERSION"; \
+	echo "Cargo.lock:           $$LOCK_VERSION"; \
+	echo ""; \
+	if [ "$$CARGO_VERSION" != "$$PYPROJECT_VERSION" ]; then \
+		echo "❌ Cargo.toml != pyproject.toml"; \
+		ERRORS=1; \
+	fi; \
+	if [ "$$CARGO_VERSION" != "$$NPM_VERSION" ]; then \
+		echo "❌ Cargo.toml != package.json"; \
+		ERRORS=1; \
+	fi; \
+	if [ "$$CARGO_VERSION" != "$$LOCK_VERSION" ]; then \
+		echo "❌ Cargo.toml != Cargo.lock (run: make sync-version)"; \
+		ERRORS=1; \
+	fi; \
+	if [ $$ERRORS -eq 1 ]; then \
+		echo ""; \
+		echo "⚠️ Version mismatch detected!"; \
+		echo "Run 'make sync-version' to sync Cargo.lock"; \
+		echo "Manually update Cargo.toml, pyproject.toml, and package.json to match"; \
+		exit 1; \
+	fi; \
+	echo "✅ All versions match: $$CARGO_VERSION"
+
+# Sync Cargo.lock with Cargo.toml version
+sync-version:
+	@echo "Syncing Cargo.lock..."
+	@cargo update -p kya-validator
+	@echo "✅ Cargo.lock updated"
+	@$(MAKE) check-version
 
 demo-install:
 	$(MAKE) -C apps/demo_backend install

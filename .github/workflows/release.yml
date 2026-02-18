@@ -9,8 +9,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
-  id-token: write  # Required for OIDC trusted publishing to PyPI
+  contents: write  # Required for creating releases
 
 env:
   CARGO_TERM_COLOR: always
@@ -77,6 +76,15 @@ jobs:
             echo "✅ bindings/wasm/package.json: $NPM_VERSION"
           fi
           
+          # Check Cargo.lock
+          LOCK_VERSION=$(grep -A1 '^name = "kya-validator"$' Cargo.lock | grep '^version =' | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          if [ "$LOCK_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "❌ Cargo.lock: $LOCK_VERSION (expected $RELEASE_VERSION)"
+            ERRORS=1
+          else
+            echo "✅ Cargo.lock: $LOCK_VERSION"
+          fi
+          
           if [ $ERRORS -eq 1 ]; then
             echo ""
             echo "⚠️ Version mismatch detected!"
@@ -84,6 +92,7 @@ jobs:
             echo "  - Cargo.toml"
             echo "  - pyproject.toml"
             echo "  - bindings/wasm/package.json"
+            echo "  - Cargo.lock (run: cargo update -p kya-validator)"
             exit 1
           fi
           
@@ -173,6 +182,7 @@ jobs:
           echo "Package: https://www.npmjs.com/package/@open-kya/kya-validator-wasm" >> $GITHUB_STEP_SUMMARY
 
   # Publish Python wheels to PyPI (Linux + macOS ARM64)
+  # Uses token-based authentication (PYPI_TOKEN secret)
   publish-pypi:
     name: Publish to PyPI (${{ matrix.os }})
     needs: prepare
@@ -180,9 +190,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    environment:
-      name: pypi
-      url: https://pypi.org/p/kya-validator
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -206,9 +213,12 @@ jobs:
           uv run maturin build --release
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: target/wheels
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          uv pip install twine
+          uv run twine upload target/wheels/*.whl
 
       - name: Summary
         shell: bash
