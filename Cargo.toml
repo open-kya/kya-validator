@@ -3,7 +3,7 @@
 
 [package]
 name = "kya-validator"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 description = "Rust core KYA (Know Your Agent) validator with Python bindings, TEE support, and blockchain integration"
 license = "MPL-2.0"
