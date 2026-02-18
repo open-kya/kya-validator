@@ -1,17 +1,20 @@
 use crate::inspector::inspect_manifest;
 use crate::policy::{apply_policy, AllowedRegionRule, MaxTransactionValueRule, PolicyRule};
 use crate::types::{
-    AttestationCheckConfig, ContentCheckType, DigestConfig, HashAlgorithm, LinkCheckConfig,
-    Manifest, PolicyContext, TEEType, TlsPinConfig, ValidationConfig, ValidationOptions,
+    AttestationCheckConfig, Manifest, PolicyContext, TEEType, ValidationConfig, ValidationOptions,
     ValidationReport,
 };
 use crate::verifier::verify_manifest_proofs;
 use chrono::{DateTime, Utc};
 use serde_json::Value;
-use sha2::{Digest, Sha256, Sha384, Sha512};
-use std::time::Duration;
 
-# [cfg(not(target_arch = "wasm32"))]
+#[cfg(not(target_arch = "wasm32"))]
+use crate::types::{ContentCheckType, DigestConfig, HashAlgorithm, LinkCheckConfig, TlsPinConfig};
+
+#[cfg(not(target_arch = "wasm32"))]
+use sha2::{Digest, Sha256, Sha384, Sha512};
+
+#[cfg(not(target_arch = "wasm32"))]
 use jsonschema::{Draft, JSONSchema};
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -30,8 +33,9 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 
 #[cfg(not(target_arch = "wasm32"))]
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
+#[cfg(not(target_arch = "wasm32"))]
 static KYA_SCHEMA: &str = include_str!("../schema/kya-manifest.schema.json");
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -128,6 +132,7 @@ fn verify_tls_pin(_cert_der: &[u8], _pin_config: &TlsPinConfig) -> Result<(), St
     Ok(())
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn validate_domain_allowlist(url: &str, allowed_domains: &[String]) -> Result<(), String> {
     let parsed = url::Url::parse(url).map_err(|e| format!("Invalid URL: {}", e))?;
     let host = parsed.host_str().ok_or("URL has no host")?;
@@ -238,6 +243,7 @@ fn fetch_with_retry(
     Err(format!("Failed after {} attempts: {}", retries, last_error))
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn compute_hash(data: &[u8], algorithm: HashAlgorithm) -> String {
     match algorithm {
         HashAlgorithm::Sha256 => {
@@ -261,6 +267,7 @@ fn compute_hash(data: &[u8], algorithm: HashAlgorithm) -> String {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn verify_content_hash(data: &[u8], config: &DigestConfig) -> Result<(), String> {
     let computed = compute_hash(data, config.algorithm);
     let expected = config.expected_hash.to_lowercase();
